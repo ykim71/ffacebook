@@ -122,24 +122,17 @@ class FFacebook extends Component {
       let static_data = await (await firebase.database().ref(`static`).once('value')).val();
       let settings = await (await firebase.database().ref(`settings`).once('value')).val();
 
-      if (settings.random_posts) {
-        static_data.posts = static_data.posts.sort(() => Math.random() - 0.5);
-      }
-      if (settings.show_varied) {
-        //now do the random varying and Log that in the
-        let control_posts = static_data.posts.filter(post => post.meta.type == 'misc' );
-        let varied = static_data.posts.filter(post => post.meta.type != 'misc');
-        let num_varied_needed = settings.num_varied;
-        varied = (varied.sort(() => Math.random() - 0.5)).slice(0, num_varied_needed);
-        static_data.posts = (varied.concat(control_posts)).sort(() => Math.random() - 0.5);
+ 
+      // get varied posts
+      let varied = static_data.posts.sort(() => Math.random() - 0.5);
 
+      localStorage.setItem('varied_post', JSON.stringify(varied[0]));
+         Logger.log_action('User begins', 'User Enters Site & Begins Experiment');
+      
 
-        localStorage.setItem('varied_post', JSON.stringify(varied[0]));
-        Logger.log_action('User begins', 'User Enters Site & Begins Experiment');
-      }
-      else {
-        static_data.posts = static_data.posts.filter(post => post.meta.type == 'misc');
-      }
+      // else {
+      //   static_data.posts = static_data.posts.filter(post => post.meta.type == 'misc');
+      // }
 
       this.setState({ static: static_data, settings: settings });
     } catch (e) {
