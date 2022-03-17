@@ -131,7 +131,7 @@ class FFacebook extends Component {
         let varied = static_data.posts.filter(post => post.meta.type != 'misc');
         let num_varied_needed = settings.num_varied;
         varied = (varied.sort(() => Math.random() - 0.5)).slice(0, num_varied_needed);
-        static_data.posts = (control_posts.concat(varied)).sort(() => Math.random() - 0.5);
+        static_data.posts = (varied.concat(control_posts)).sort(() => Math.random() - 0.5);
 
 
         localStorage.setItem('varied_post', JSON.stringify(varied[0]));
